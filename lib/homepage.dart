@@ -172,7 +172,36 @@ class _HomePageState extends State<HomePage> {
                child: IconButton(icon: Icon(Icons.arrow_left), onPressed: prevSet,splashColor: Colors.transparent)
               ),
             AnimatedSwitcher(
-              // transitionBuilder: ,
+              layoutBuilder: (Widget currentChild, List<Widget> previousChildren) {
+                       return currentChild;
+                           },
+              transitionBuilder: (Widget child, Animation<double> animation,) {
+                final inAnimation =
+                  Tween<Offset>(begin: Offset(1.0, 0.0), end: Offset(0.0, 0.0))
+                    .animate(animation);
+                 final outAnimation =
+                  Tween<Offset>(begin: Offset(-1.0, 0.0), end: Offset(0.0, 0.0))
+                    .animate(animation);
+
+                 if (child.key == ValueKey(photoIndex)) {
+                   return ClipRect(
+                    child: SlideTransition(
+                      position: inAnimation,
+                        child: child,
+                        ),
+                      );
+                    } else {
+                    return ClipRect(
+                      child: SlideTransition(
+                      position: outAnimation,
+                         child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                             child: child,
+                            ),
+                          ),
+                         );
+                        }
+                       },
               duration: Duration(milliseconds: 400),
                 child: _myAnimatedWidget(context)
             ),
